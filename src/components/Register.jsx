@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/authContext";
+import { Alert } from "./Alert";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
 export function Register() {
-  const userRef = useRef();
-
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -23,11 +23,7 @@ export function Register() {
   });
 
   const [error, setError] = useState("");
-  const { signUp } = useAuth();
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+  const { signUp, signInWithGoogle } = useAuth();
 
   useEffect(() => {
     setValidUser((prev) => ({
@@ -50,10 +46,14 @@ export function Register() {
     }));
   }, [user.password]);
 
+  useEffect(() => {
+    setError("");
+  }, [user]);
+
   const validateName = (name) => {
-    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
+    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]{3,50}$/;
     return nameRegex.test(name);
-  }
+  };
 
   const validateEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -62,7 +62,7 @@ export function Register() {
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    console.log("result",passwordRegex.test(password))
+    console.log("result", passwordRegex.test(password));
     return passwordRegex.test(password);
   };
 
@@ -78,22 +78,27 @@ export function Register() {
     setUserFocus({ ...userFocus, [name]: false });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validUser.email || !validUser.password) {
-      setError("Por favor verifica los campos antes de enviar.");
-      return;
-    }
+
     try {
-      signUp(user.name, user.email, user.password);
+      await signUp(user.name, user.email, user.password);
     } catch (error) {
       setError(error.message);
     }
   };
 
+  const handleGoogleSignInSuccess = (response) => {
+    signInWithGoogle(response);
+  };
+
+  const handleGoogleSignInFailure = () => {
+    setError("Error al registrarse con Google");
+  };
+
   return (
     <div className="bg-white rounded w-full max-w-sm m-auto">
-      {error && <p>{error}</p>}
+      {error && <Alert message={error} />}
 
       <h1 className="block text-black text-2xl text-center mt-6 mb-4 font-bold">
         Regístrate
@@ -110,7 +115,6 @@ export function Register() {
           </label>
           <input
             type="text"
-            ref={userRef}
             placeholder="Tu nombre"
             name="name"
             autoComplete="off"
@@ -122,7 +126,10 @@ export function Register() {
             onBlur={handleFocusOff}
           />
           {userFocus.name && user.name && !validUser.name && (
-            <p className="text-red-500 text-xs mt-1">El nombre no es valido.</p>
+            <p className="text-red-500 text-xs mt-1">
+              El nombre debe tener entre 3 y 50 caracteres y solo puede incluir
+              letras y espacios.
+            </p>
           )}
         </div>
 
@@ -175,18 +182,24 @@ export function Register() {
           )}
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-2">
           <button
             className={`${
               validUser.email && validUser.password
                 ? "bg-blue-500 hover:bg-blue-700"
                 : "bg-gray-400"
             } text-white text-sm font-bold py-3 px-3 rounded-full focus:outline-none focus:shadow-outline w-full`}
-            
             disabled={!validUser.email || !validUser.password}
           >
             Registrarse
           </button>
+        </div>
+
+        <div>
+          <GoogleLogin
+            onSuccess={handleGoogleSignInSuccess}
+            onError={handleGoogleSignInFailure}
+          />
         </div>
       </form>
     </div>

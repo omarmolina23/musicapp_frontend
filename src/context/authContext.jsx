@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../api/axios";
 
 export const authContext = createContext();
@@ -13,16 +13,18 @@ export function AuthProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem("token") || null);
 
     const signUp = async (name, email, password) =>{
-        try {
-            const response = await axios.post("/signup", {name, email, password});
 
-            console.log("Registro exitoso", response);
+            try{
+                const response = await axios.post("/signup", {name, email, password});
 
-            setToken(response.data.token);
-
-        } catch (error) {
-            console.log("Error", error);
-        }
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+            }
+            catch(error){
+                if(error.response) throw new Error(error.response.data.message);
+                else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
+            }
+            
     }
 
     const signIn = async (email, password) =>{
@@ -38,10 +40,18 @@ export function AuthProvider({ children }) {
         }
     }
 
-    
+    const signInWithGoogle = async (response) =>{
+        try{
+            const {credential} = response;
+            console.log("Token de Google", credential);
+        }
+        catch(error){
+            console.log("Error", error);
+        }
+    }
 
     return (
-        <authContext.Provider value={{signUp, signIn}}>
+        <authContext.Provider value={{signUp, signIn, signInWithGoogle}}>
             {children}
         </authContext.Provider>
     )
