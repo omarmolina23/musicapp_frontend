@@ -10,17 +10,19 @@ export const useAuth = () =>{
 } 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem("token") || null);
-
+    
     const signUp = async (name, email, password) =>{
 
             try{
                 const response = await axios.post("/signup", {name, email, password});
-
-                setToken(response.data.token);
-                localStorage.setItem("token", response.data.token);
+                
+                setUser({
+                    name: name,
+                    email: email
+                })
             }
             catch(error){
+                console.log("Error", error);
                 if(error.response) throw new Error(error.response.data.message);
                 else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
             }
@@ -33,20 +35,25 @@ export function AuthProvider({ children }) {
 
             console.log("Login exitoso", response);
 
-            setToken(response.data.token);
-
         } catch (error) {
             console.log("Error", error);
         }
     }
 
-    const signInWithGoogle = async (response) =>{
+    const signInWithGoogle = async (token) =>{
         try{
-            const {credential} = response;
-            console.log("Token de Google", credential);
+
+            console.log("token", token.credential);
+            const response = await axios.post("/google", {token: token.credential});
+            console.log("response", response);
+            const responseSignUp = await axios.post("/signup", {name: response.data.name, email: response.data.email, googleId: response.data.googleId});
+
+            console.log("responseSignUp", responseSignUp);
+            
         }
         catch(error){
-            console.log("Error", error);
+            if(error.response) throw new Error(error.response.data.message);
+            else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
         }
     }
 

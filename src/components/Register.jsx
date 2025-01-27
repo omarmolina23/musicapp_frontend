@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Alert } from "./Alert";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { Eye, EyeOff } from "lucide-react";
 
 export function Register() {
   const [user, setUser] = useState({
@@ -22,8 +24,13 @@ export function Register() {
     password: false,
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [error, setError] = useState("");
+
   const { signUp, signInWithGoogle } = useAuth();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setValidUser((prev) => ({
@@ -62,7 +69,6 @@ export function Register() {
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    console.log("result", passwordRegex.test(password));
     return passwordRegex.test(password);
   };
 
@@ -83,17 +89,26 @@ export function Register() {
 
     try {
       await signUp(user.name, user.email, user.password);
+      navigate("/");
     } catch (error) {
       setError(error.message);
     }
   };
 
-  const handleGoogleSignInSuccess = (response) => {
-    signInWithGoogle(response);
+  const handleGoogleSignInSuccess = async (response) => {
+    try {
+      await signInWithGoogle(response);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleGoogleSignInFailure = () => {
     setError("Error al registrarse con Google");
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -156,7 +171,7 @@ export function Register() {
           )}
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 relative">
           <label
             htmlFor="password"
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -164,7 +179,7 @@ export function Register() {
             Contraseña
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="*********"
             name="password"
             className={`text-black shadow appearance-none border rounded w-full py-3 px-3 leading-relaxed focus:outline-none focus:shadow-outline ${
@@ -174,6 +189,14 @@ export function Register() {
             onFocus={handleFocusOn}
             onBlur={handleFocusOff}
           />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform translate-y-1  flex items-center text-gray-500 focus:outline-none"
+            onClick={toggleShowPassword}
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+
           {userFocus.password && user.password && !validUser.password && (
             <p className="text-red-500 text-xs mt-1">
               La contraseña debe tener al menos 8 caracteres, incluyendo una
@@ -182,7 +205,7 @@ export function Register() {
           )}
         </div>
 
-        <div className="flex items-center justify-center mb-2">
+        <div className="flex items-center justify-center mb-3">
           <button
             className={`${
               validUser.email && validUser.password
@@ -195,10 +218,15 @@ export function Register() {
           </button>
         </div>
 
-        <div>
+        <div className="flex items-center justify-center flex-grow">
           <GoogleLogin
             onSuccess={handleGoogleSignInSuccess}
             onError={handleGoogleSignInFailure}
+            size="large"
+            shape="pill"
+            logo_alignment="center"
+            theme="filled_blue"
+            width={"335px"}
           />
         </div>
       </form>
