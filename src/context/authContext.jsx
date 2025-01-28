@@ -22,7 +22,6 @@ export function AuthProvider({ children }) {
                 })
             }
             catch(error){
-                console.log("Error", error);
                 if(error.response) throw new Error(error.response.data.message);
                 else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
             }
@@ -31,12 +30,15 @@ export function AuthProvider({ children }) {
 
     const signIn = async (email, password) =>{
         try {
-            const response = await axios.post("/login", {email, password});
+            const response = await axios.post("/signin", {email, password});
 
             console.log("Login exitoso", response);
 
+            
+
         } catch (error) {
-            console.log("Error", error);
+            if(error.response) throw new Error(error.response.data.message);
+            else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
         }
     }
 

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
-import { Eye, EyeOff } from "lucide-react";
-import { GoogleLogin } from "@react-oauth/google";
+import { Alert } from "./Alert";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { Eye, EyeOff } from "lucide-react";
+
 
 export function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -21,16 +23,22 @@ export function Login() {
   const handleChange = ({ target: { name, value } }) => {
     setUser((prev) => ({ ...prev, [name]: value }));
     setIsTrimmed((prev) => ({ ...prev, [name]: !value.trim() }));
-  
+
     if (!isTouched[name]) {
       setIsTouched((prev) => ({ ...prev, [name]: true }));
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
+
+    try {
+      await signIn(user.email, user.password);
+      navigate("/");
+    } catch (error) {
+      console.log("Hi");
+      setError(error.message);
+    }
   };
 
   const handleGoogleSignInSuccess = async (response) => {
@@ -51,6 +59,7 @@ export function Login() {
 
   return (
     <div className="bg-white rounded w-full max-w-sm m-auto">
+      {error && <Alert message={error} />}
       <h1 className="block text-black text-2xl text-center mt-6 mb-4 font-bold">
         Inicia sesión
       </h1>
@@ -70,12 +79,16 @@ export function Login() {
             placeholder="correo@gmail.com"
             name="email"
             className={`text-black shadow appearance-none border rounded w-full py-3 px-3 leading-relaxed focus:outline-none focus:shadow-outline ${
-              isTouched.email && isTrimmed.email ? "border-red-500" : "border-gray-300"
+              isTouched.email && isTrimmed.email
+                ? "border-red-500"
+                : "border-gray-300"
             }`}
             onChange={handleChange}
           />
           {isTouched.email && isTrimmed.email && (
-            <p className="text-red-500 text-xs mt-1">El correo no es válido.</p>
+            <p className="text-red-500 text-xs mt-1">
+              El correo no puede estar vacío.
+            </p>
           )}
         </div>
 
@@ -93,7 +106,9 @@ export function Login() {
               placeholder="*********"
               name="password"
               className={`text-black shadow appearance-none border rounded w-full py-3 pr-12 pl-3 leading-relaxed focus:outline-none focus:shadow-outline ${
-                isTouched.password && isTrimmed.password ? "border-red-500" : "border-gray-300"
+                isTouched.password && isTrimmed.password
+                  ? "border-red-500"
+                  : "border-gray-300"
               }`}
               onChange={handleChange}
             />
@@ -108,13 +123,20 @@ export function Login() {
           </div>
 
           {isTouched.password && isTrimmed.password && (
-            <p className="text-red-500 text-xs mt-1">La contraseña no puede estar vacía.</p>
+            <p className="text-red-500 text-xs mt-1">
+              La contraseña no puede estar vacía.
+            </p>
           )}
         </div>
-      
+
         <div className="flex items-center justify-center mb-3">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-3 px-3 rounded-full focus:outline-none focus:shadow-outline w-full"
+            className={`${
+              user.email.trim() && user.password.trim()
+                ? "bg-blue-500 hover:bg-blue-700"
+                : "bg-gray-400"
+            } text-white text-sm font-bold py-3 px-3 rounded-full focus:outline-none focus:shadow-outline w-full`}
+            disabled={!user.email.trim() || !user.password.trim()}
           >
             Registrarse
           </button>
