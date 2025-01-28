@@ -178,24 +178,30 @@ export function Register() {
           >
             Contraseña
           </label>
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="*********"
-            name="password"
-            className={`text-black shadow appearance-none border rounded w-full py-3 px-3 leading-relaxed focus:outline-none focus:shadow-outline ${
-              userFocus.password && !validUser.password ? "border-red-500" : ""
-            }`}
-            onChange={handleChange}
-            onFocus={handleFocusOn}
-            onBlur={handleFocusOff}
-          />
-          <button
-            type="button"
-            className="absolute right-3 top-1/2 transform translate-y-1  flex items-center text-gray-500 focus:outline-none"
-            onClick={toggleShowPassword}
-          >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="*********"
+              name="password"
+              className={`text-black shadow appearance-none border rounded w-full py-3 pr-12 pl-3 leading-relaxed focus:outline-none focus:shadow-outline ${
+                userFocus.password && !validUser.password
+                  ? "border-red-500"
+                  : ""
+              }`}
+              onChange={handleChange}
+              onFocus={handleFocusOn}
+              onBlur={handleFocusOff}
+            />
+
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center text-gray-500 focus:outline-none"
+              onClick={toggleShowPassword}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           {userFocus.password && user.password && !validUser.password && (
             <p className="text-red-500 text-xs mt-1">
@@ -218,7 +224,7 @@ export function Register() {
           </button>
         </div>
 
-        <div className="flex items-center justify-center flex-grow">
+        <div className="flex items-center justify-center flex-grow relative">
           <GoogleLogin
             onSuccess={handleGoogleSignInSuccess}
             onError={handleGoogleSignInFailure}
