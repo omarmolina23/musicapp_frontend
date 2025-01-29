@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Alert } from "./Alert";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import { Eye, EyeOff } from "lucide-react";
+import { RegistrationButton } from "./registration/RegistrationButton";
+import { GoogleButton } from "./google/GoogleButton";
+import { Eye, EyeOff} from "lucide-react";
 
 export function Register() {
   const [user, setUser] = useState({
@@ -27,8 +28,9 @@ export function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const { signUp, signInWithGoogle } = useAuth();
+  const { signUp, signUpWithGoogle } = useAuth();
 
   const navigate = useNavigate();
 
@@ -86,25 +88,30 @@ export function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       await signUp(user.name, user.email, user.password);
       navigate("/");
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
   };
 
   const handleGoogleSignInSuccess = async (response) => {
+    setLoading(true);
     try {
-      await signInWithGoogle(response);
+      await signUpWithGoogle(response);
+      navigate("/");
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
   };
 
   const handleGoogleSignInFailure = () => {
     setError("Error al registrarse con Google");
+    setLoading(false);
   };
 
   const toggleShowPassword = () => {
@@ -118,7 +125,7 @@ export function Register() {
       <h1 className="block text-black text-2xl text-center mt-6 mb-4 font-bold">
         Regístrate
       </h1>
-      <hr className="border-gray-400 w-5/6 mx-auto border-t-2"></hr>
+      <hr className="border-gray-400 w-5/6 mx-auto border-t-2" />
 
       <form onSubmit={handleSubmit} className="px-6 pt-8 pb-2 mb-2">
         <div className="mb-4">
@@ -139,6 +146,7 @@ export function Register() {
             onChange={handleChange}
             onFocus={handleFocusOn}
             onBlur={handleFocusOff}
+            disabled={loading}
           />
           {userFocus.name && user.name && !validUser.name && (
             <p className="text-red-500 text-xs mt-1">
@@ -165,6 +173,7 @@ export function Register() {
             onChange={handleChange}
             onFocus={handleFocusOn}
             onBlur={handleFocusOff}
+            disabled={loading}
           />
           {userFocus.email && user.email && !validUser.email && (
             <p className="text-red-500 text-xs mt-1">El correo no es válido.</p>
@@ -192,12 +201,14 @@ export function Register() {
               onChange={handleChange}
               onFocus={handleFocusOn}
               onBlur={handleFocusOff}
+              disabled={loading}
             />
 
             <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center text-gray-500 focus:outline-none"
               onClick={toggleShowPassword}
+              disabled={loading}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -211,30 +222,20 @@ export function Register() {
           )}
         </div>
 
-        <div className="flex items-center justify-center mb-3">
-          <button
-            className={`${
-              validUser.email && validUser.password
-                ? "bg-blue-500 hover:bg-blue-700"
-                : "bg-gray-400"
-            } text-white text-sm font-bold py-3 px-3 rounded-full focus:outline-none focus:shadow-outline w-full`}
-            disabled={!validUser.email || !validUser.password}
-          >
-            Registrarse
-          </button>
-        </div>
+        <RegistrationButton
+          classNameProps="flex items-center justify-center mb-3"
+          validName={validUser.name}
+          validEmail={validUser.email}
+          validPassword={validUser.password}
+          loading={loading}
+          message="Registrarse"
+        />
 
-        <div className="flex items-center justify-center flex-grow relative">
-          <GoogleLogin
-            onSuccess={handleGoogleSignInSuccess}
-            onError={handleGoogleSignInFailure}
-            size="large"
-            shape="pill"
-            logo_alignment="center"
-            theme="filled_blue"
-            width={"335px"}
-          />
-        </div>
+        <GoogleButton
+          loading={loading}
+          handleGoogleSignInSuccess={handleGoogleSignInSuccess}
+          handleGoogleSignInFailure={handleGoogleSignInFailure}
+        />
       </form>
     </div>
   );

@@ -2,18 +2,33 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Alert } from "./Alert";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+import { LoginButton } from "./registration/LoginButton";
+import { GoogleButton } from "./google/GoogleButton";
 import { Eye, EyeOff } from "lucide-react";
 
-
 export function Login() {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
-  const [isTouched, setIsTouched] = useState({ email: false, password: false });
-  const [isTrimmed, setIsTrimmed] = useState({ email: true, password: true });
+
+  const [isTouched, setIsTouched] = useState({
+    email: false,
+    password: false,
+  });
+
+  const [isTrimmed, setIsTrimmed] = useState({
+    email: true,
+    password: true,
+  });
+
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { signIn, signInWithGoogle } = useAuth();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,21 +46,27 @@ export function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Activar estado de carga
 
     try {
       await signIn(user.email, user.password);
       navigate("/");
     } catch (error) {
-      console.log("Hi");
       setError(error.message);
+    } finally {
+      setLoading(false); // Desactivar estado de carga
     }
   };
 
   const handleGoogleSignInSuccess = async (response) => {
+    setLoading(true);
     try {
       await signInWithGoogle(response);
+      navigate("/");
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,6 +105,7 @@ export function Login() {
                 : "border-gray-300"
             }`}
             onChange={handleChange}
+            disabled={loading}
           />
           {isTouched.email && isTrimmed.email && (
             <p className="text-red-500 text-xs mt-1">
@@ -111,12 +133,14 @@ export function Login() {
                   : "border-gray-300"
               }`}
               onChange={handleChange}
+              disabled={loading}
             />
 
             <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center text-gray-500 focus:outline-none"
               onClick={toggleShowPassword}
+              disabled={loading}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -129,30 +153,19 @@ export function Login() {
           )}
         </div>
 
-        <div className="flex items-center justify-center mb-3">
-          <button
-            className={`${
-              user.email.trim() && user.password.trim()
-                ? "bg-blue-500 hover:bg-blue-700"
-                : "bg-gray-400"
-            } text-white text-sm font-bold py-3 px-3 rounded-full focus:outline-none focus:shadow-outline w-full`}
-            disabled={!user.email.trim() || !user.password.trim()}
-          >
-            Registrarse
-          </button>
-        </div>
+        <LoginButton
+          classNameProps={"flex items-center justify-center mb-3"}
+          userTrimmedEmail={user.email.trim()}
+          userTrimmedPassword={user.password.trim()}
+          loading={loading}
+          message={"Iniciar sesión"}
+        />
 
-        <div className="flex items-center justify-center">
-          <GoogleLogin
-            onSuccess={handleGoogleSignInSuccess}
-            onError={handleGoogleSignInFailure}
-            size="large"
-            shape="pill"
-            logo_alignment="center"
-            theme="filled_blue"
-            width={"335px"}
-          />
-        </div>
+        <GoogleButton
+          loading={loading}
+          handleGoogleSignInSuccess={handleGoogleSignInSuccess}
+          handleGoogleSignInFailure={handleGoogleSignInFailure}
+        />
       </form>
     </div>
   );
