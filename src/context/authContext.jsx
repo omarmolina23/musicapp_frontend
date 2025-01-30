@@ -9,7 +9,17 @@ export const useAuth = () => {
   return context;
 };
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, [])
 
   const signUp = async (name, email, password) => {
     try {
@@ -19,6 +29,14 @@ export function AuthProvider({ children }) {
         name: name,
         email: email,
       });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: name,
+          email: email,
+        })
+      );
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -28,6 +46,19 @@ export function AuthProvider({ children }) {
   const signIn = async (email, password) => {
     try {
       const response = await axios.post("/signin", { email, password });
+
+      setUser({
+        name: response.data.name,
+        email: response.data.email,
+      });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.name,
+          email: response.data.email,
+        })
+      )
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -37,11 +68,24 @@ export function AuthProvider({ children }) {
   const signUpWithGoogle = async (token) => {
     try {
       const response = await axios.post("/google", { token: token.credential });
-      const responseSignUp = await axios.post("/signup", {
+      await axios.post("/signup", {
         name: response.data.name,
         email: response.data.email,
         googleId: response.data.googleId,
       });
+
+      setUser({
+        name: response.data.name,
+        email: response.data.email,
+      });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.name,
+          email: response.data.email,
+        })
+      )
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -51,11 +95,24 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async (token) => {
     try {
       const response = await axios.post("/google", { token: token.credential });
-      const responseSignIn = await axios.post("/signin", {
+      await axios.post("/signin", {
         name: response.data.name,
         email: response.data.email,
         googleId: response.data.googleId,
       });
+
+      setUser({
+        name: response.data.name,
+        email: response.data.email,
+      });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.name,
+          email: response.data.email,
+        })
+      )
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -64,7 +121,7 @@ export function AuthProvider({ children }) {
 
   return (
     <authContext.Provider
-      value={{ signUp, signIn, signUpWithGoogle, signInWithGoogle }}
+      value={{ signUp, signIn, signUpWithGoogle, signInWithGoogle, user }}
     >
       {children}
     </authContext.Provider>

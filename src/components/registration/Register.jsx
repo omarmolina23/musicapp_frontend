@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import { Alert } from "../alerts/Alert";
 import { useNavigate } from "react-router-dom";
-import { RegistrationButton } from "./RegistrationButton";
+import { SignButton } from "./SignButton";
 import { GoogleButton } from "../google/GoogleButton";
 import { AlertDown } from "../alerts/AlertDown";
 import { Eye, EyeOff } from "lucide-react";
@@ -120,7 +120,8 @@ export function Register() {
   };
 
   return (
-    <div className="bg-white rounded w-full max-w-sm m-auto">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gray-900 text-white p-6">
+      <div className="bg-white rounded w-full max-w-sm m-auto">
       {error && <Alert message={error} />}
 
       <h1 className="block text-black text-2xl text-center mt-6 mb-4 font-bold">
@@ -222,12 +223,11 @@ export function Register() {
             }
           />
         </div>
-
-        <RegistrationButton
+        
+        <SignButton
           classNameProps="flex items-center justify-center mb-3"
-          validName={validUser.name}
-          validEmail={validUser.email}
-          validPassword={validUser.password}
+          classNameButtonProps={validUser.name && validUser.email && validUser.password}
+          disableButtonProps={!validUser.name || !validUser.email || !validUser.password}
           loading={loading}
           message="Registrarse"
         />
@@ -239,5 +239,7 @@ export function Register() {
         />
       </form>
     </div>
+    </div>
+    
   );
 }
