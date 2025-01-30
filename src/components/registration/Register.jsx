@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/authContext";
-import { Alert } from "./Alert";
+import { useAuth } from "../../context/authContext";
+import { Alert } from "../alerts/Alert";
 import { useNavigate } from "react-router-dom";
-import { RegistrationButton } from "./registration/RegistrationButton";
-import { GoogleButton } from "./google/GoogleButton";
-import { Eye, EyeOff} from "lucide-react";
+import { RegistrationButton } from "./RegistrationButton";
+import { GoogleButton } from "../google/GoogleButton";
+import { AlertDown } from "../alerts/AlertDown";
+import { Eye, EyeOff } from "lucide-react";
 
 export function Register() {
   const [user, setUser] = useState({
@@ -148,12 +149,12 @@ export function Register() {
             onBlur={handleFocusOff}
             disabled={loading}
           />
-          {userFocus.name && user.name && !validUser.name && (
-            <p className="text-red-500 text-xs mt-1">
-              El nombre debe tener entre 3 y 50 caracteres y solo puede incluir
-              letras y espacios.
-            </p>
-          )}
+          <AlertDown
+            params={userFocus.name && user.name && !validUser.name}
+            message={
+              "El nombre debe tener entre 3 y 50 caracteres y solo puede incluir letras y espacios."
+            }
+          />
         </div>
 
         <div className="mb-4">
@@ -175,9 +176,10 @@ export function Register() {
             onBlur={handleFocusOff}
             disabled={loading}
           />
-          {userFocus.email && user.email && !validUser.email && (
-            <p className="text-red-500 text-xs mt-1">El correo no es válido.</p>
-          )}
+          <AlertDown
+            params={userFocus.email && user.email && !validUser.email}
+            message={"El correo no es válido."}
+          />
         </div>
 
         <div className="mb-8 relative">
@@ -213,13 +215,12 @@ export function Register() {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-
-          {userFocus.password && user.password && !validUser.password && (
-            <p className="text-red-500 text-xs mt-1">
-              La contraseña debe tener al menos 8 caracteres, incluyendo una
-              letra y un número.
-            </p>
-          )}
+          <AlertDown
+            params={userFocus.password && user.password && !validUser.password}
+            message={
+              "La contraseña debe tener al menos 8 caracteres, incluyendo una letra y un número."
+            }
+          />
         </div>
 
         <RegistrationButton

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/authContext";
-import { Alert } from "./Alert";
+import { useAuth } from "../../context/authContext";
+import { Alert } from "../alerts/Alert";
 import { useNavigate } from "react-router-dom";
-import { LoginButton } from "./registration/LoginButton";
-import { GoogleButton } from "./google/GoogleButton";
+import { LoginButton } from "./LoginButton";
+import { GoogleButton } from "../google/GoogleButton";
+import { AlertDown } from "../alerts/AlertDown";
 import { Eye, EyeOff } from "lucide-react";
 
 export function Login() {
@@ -81,13 +82,13 @@ export function Login() {
   return (
     <div className="bg-white rounded w-full max-w-sm m-auto">
       {error && <Alert message={error} />}
+
       <h1 className="block text-black text-2xl text-center mt-6 mb-4 font-bold">
         Inicia sesión
       </h1>
       <hr className="border-gray-400 w-5/6 mx-auto border-t-2" />
 
       <form onSubmit={handleSubmit} className="px-6 pt-8 pb-2 mb-2">
-        {/* Campo de correo electrónico */}
         <div className="mb-6">
           <label
             htmlFor="email"
@@ -107,11 +108,10 @@ export function Login() {
             onChange={handleChange}
             disabled={loading}
           />
-          {isTouched.email && isTrimmed.email && (
-            <p className="text-red-500 text-xs mt-1">
-              El correo no puede estar vacío.
-            </p>
-          )}
+          <AlertDown
+            params={isTrimmed.email && isTouched.email}
+            message={"El correo no puede estar vacío."}
+          />
         </div>
 
         <div className="mb-8 relative">
@@ -145,12 +145,10 @@ export function Login() {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-
-          {isTouched.password && isTrimmed.password && (
-            <p className="text-red-500 text-xs mt-1">
-              La contraseña no puede estar vacía.
-            </p>
-          )}
+          <AlertDown
+            params={isTrimmed.password && isTouched.password}
+            message={"La contraseña no puede estar vacía."}
+          />
         </div>
 
         <LoginButton
