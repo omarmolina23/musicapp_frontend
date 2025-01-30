@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/authContext";
-import { Alert } from "../alerts/Alert";
+import { useAuth } from "../context/authContext";
+import { Alert } from "../components/alerts/Alert";
 import { useNavigate } from "react-router-dom";
-import { SignButton } from "./SignButton";
-import { GoogleButton } from "../google/GoogleButton";
-import { AlertDown } from "../alerts/AlertDown";
+import { SignButton } from "../components/registration/SignButton";
+import { GoogleButton } from "../components/google/GoogleButton";
+import { AlertDown } from "../components/alerts/AlertDown";
 import { Eye, EyeOff } from "lucide-react";
 
 export function Login() {

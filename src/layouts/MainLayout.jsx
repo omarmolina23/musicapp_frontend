@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '../components/mainComponents/Navbar';
-import { Login } from '../components/registration/Login';
+import { Login } from '../pages/Login';
 export function MainLayout() {
   return (
     <div style={{ display: "flex" }}>
