@@ -9,7 +9,6 @@ export function Sidebar() {
         <SideButton label="Álbumes" active={false} />
         <SideButton label="Álbumes" active={false} />
         </div>
-        
       </div>
     );
   

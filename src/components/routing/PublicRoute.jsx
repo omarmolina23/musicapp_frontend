@@ -1,12 +1,10 @@
 import { useAuth } from "../../context/authContext";
 import { Navigate, Outlet } from "react-router-dom";
 
-export function ProtectedRoute() {
+export function PublicRoute() {
   const { user } = useAuth();
 
-  console.log("user", user);
-
-  if (!user) return <Navigate to="/login" replace />;
+  if (user) return <Navigate to="/" replace />;
 
   return <Outlet />;
 }

@@ -6,7 +6,7 @@ export function SideButton({ label, active }) {
       }`}
     >
       <button
-        className={`bg-slate-700 flex justify-center  gap-2 py-2 px-4 rounded-full text-sm font-medium w-full  hover:bg-gray-800 hover:text-white ${
+        className={`bg-slate-700 flex justify-center  gap-2 py-1 px-4 rounded-full text-sm font-medium w-full  hover:bg-gray-800 hover:text-white ${
           active ? "text-black" : "text-gray-400"
         }`}
       >

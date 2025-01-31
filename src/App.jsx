@@ -6,6 +6,7 @@ import { SuccessfulRegister } from "./pages/SuccessfulRegister";
 import { AuthProvider } from "./context/authContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ProtectedRoute } from "./components/routing/ProtectedRoute";
+import { PublicRoute } from "./components/routing/PublicRoute";
 import { MainLayout } from "./layouts/MainLayout";
 
 import "./styles.css";
@@ -21,9 +22,14 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/register/success" element={<SuccessfulRegister />} />
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/register/success"
+                element={<SuccessfulRegister />}
+              />
+            </Route>
           </Routes>
         </AuthProvider>
       </GoogleOAuthProvider>
