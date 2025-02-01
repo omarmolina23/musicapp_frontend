@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
+import { Music } from "./pages/Music";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { SuccessfulRegister } from "./pages/SuccessfulRegister";
@@ -19,6 +20,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/music" element={<Music />} />
               </Route>
             </Route>
 

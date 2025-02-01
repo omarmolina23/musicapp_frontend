@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
-  }, [])
+  }, []);
 
   const signUp = async (name, email, password) => {
     try {
@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
           name: response.data.name,
           email: response.data.email,
         })
-      )
+      );
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -85,7 +85,7 @@ export function AuthProvider({ children }) {
           name: response.data.name,
           email: response.data.email,
         })
-      )
+      );
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -112,7 +112,19 @@ export function AuthProvider({ children }) {
           name: response.data.name,
           email: response.data.email,
         })
-      )
+      );
+    } catch (error) {
+      if (error.response) throw new Error(error.response.data.message);
+      else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await axios.post("/signout");
+      setUser(null);
+      localStorage.removeItem("user");
+
     } catch (error) {
       if (error.response) throw new Error(error.response.data.message);
       else throw new Error("Error de red. Por favor, inténtalo de nuevo.");
@@ -121,7 +133,7 @@ export function AuthProvider({ children }) {
 
   return (
     <authContext.Provider
-      value={{ signUp, signIn, signUpWithGoogle, signInWithGoogle, user }}
+      value={{ signUp, signIn, signUpWithGoogle, signInWithGoogle, signOut, user }}
     >
       {children}
     </authContext.Provider>
