@@ -25,7 +25,7 @@ export function Home() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-sky-950 via-slate-900 to-slate-900 h-[575px] rounded-md flex mr-1 flex-col scroll-container">
+    <div className="bg-gradient-to-b from-sky-950 via-slate-900 to-slate-900 h-[580px] rounded-md flex mr-1 flex-col scroll-container">
       {/* Contenedor de los botones - Mantenerlos fijos */}
       <div className="px-4 py-4 space-x-2 flex flex-row sticky top-0 z-20">
         <SideButton label="Todo" active={false} />
@@ -40,13 +40,13 @@ export function Home() {
       <div className="overflow-hidden flex-1">
         {/* Contenedor de las canciones con scroll */}
         <div className=" overflow-y-auto h-full">
-          {loading
-            ? Array.from({ length: 10 }).map((index) => (
-                <SongCardSkeleton key={index} />
-              ))
-            : songs.map((song, index) => (
-                <SongCard key={song.id} song={song} index={index} />
-              ))}
+          {loading ? (
+            <div></div>
+          ) : (
+            songs.map((song, index) => (
+              <SongCard key={song.id} song={song} index={index} />
+            ))
+          )}
         </div>
       </div>
     </div>

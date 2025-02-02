@@ -38,3 +38,31 @@ body {
   background: transparent;
   opacity: 0;
 }
+
+/* Estilo del thumb personalizado */
+input[type="range"]::-webkit-slider-thumb {
+  width: 12px;  /* Tamaño más pequeño */
+  height: 12px; /* Tamaño más pequeño */
+  border-radius: 50%; /* Para hacerlo redondo */
+  background: #1956ff; /* Azul oscuro */
+  cursor: pointer;
+  -webkit-appearance: none; /* Evita que el estilo predeterminado se aplique en Chrome */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;  /* Tamaño más pequeño */
+  height: 12px; /* Tamaño más pequeño */
+  border-radius: 50%; /* Para hacerlo redondo */
+  background: #1956ff; /* Azul oscuro */
+  cursor: pointer;
+  -moz-appearance: none; /* Evita que el estilo predeterminado se aplique en Firefox */
+}
+
+input[type="range"]::-ms-thumb {
+  width: 12px;  /* Tamaño más pequeño */
+  height: 12px; /* Tamaño más pequeño */
+  border-radius: 50%; /* Para hacerlo redondo */
+  background: #1956ff; /* Azul oscuro */
+  cursor: pointer;
+  -ms-appearance: none; /* Evita que el estilo predeterminado se aplique en IE/Edge */
+}

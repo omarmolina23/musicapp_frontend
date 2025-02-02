@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayIcon } from "@heroicons/react/24/solid";
+import { useMusic } from "../../context/musicContext";
 import { IoPlaySharp } from "react-icons/io5";
 
 export function SongCard({ song, index }) {
@@ -11,6 +11,8 @@ export function SongCard({ song, index }) {
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   };
 
+  const { togglePlay } = useMusic();
+
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -21,6 +23,7 @@ export function SongCard({ song, index }) {
 
   const handlePlay = () => {
     console.log("song", song);
+    togglePlay(song);
   };
 
   return (

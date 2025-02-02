@@ -24,7 +24,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className=" text-white w-screen h-16 shadow-xl flex items-center">
+    <nav className=" text-white w-screen h-16 flex">
       <div className="flex justify-between items-center w-full px-4">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold absolute left-6">
