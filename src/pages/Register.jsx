@@ -92,7 +92,7 @@ export function Register() {
     setLoading(true);
     try {
       await signUp(user.name, user.email, user.password);
-      navigate("/");
+      navigate('/register/success');
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -103,7 +103,7 @@ export function Register() {
     setLoading(true);
     try {
       await signUpWithGoogle(response);
-      navigate("/");
+      navigate("/register/success");
     } catch (error) {
       setError(error.message);
       setLoading(false);

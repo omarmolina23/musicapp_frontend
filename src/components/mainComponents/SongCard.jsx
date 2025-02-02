@@ -54,10 +54,10 @@ export function SongCard({ song, index }) {
       </div>
 
       {/* Álbum */}
-      <div className="w-[500px] text-gray-400 text-sm ml-2">{song.album}</div>
+      <div className="w-[495px] text-gray-400 text-sm ml-2">{song.album}</div>
 
       {/* Duración */}
-      <div className="w-16 flex justify-end mr-10 text-gray-400 text-sm">
+      <div className="w-16 flex justify-end mr-6 text-gray-400 text-sm">
         {formatDuration(song.duration)}
       </div>
     </div>

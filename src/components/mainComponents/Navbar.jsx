@@ -69,14 +69,14 @@ export function Navbar() {
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-gray-700 text-white text-sm rounded-md shadow-lg">
               <ul>
-                <li className="px-4 py-2 hover:bg-gray-600">
+                <li className="px-4 py-2 rounded-t-md hover:bg-gray-600">
                   <Link to="/profile">Perfil</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-600">
                   <Link to="/settings">Configuración</Link>
                 </li>
                 <hr className="border-gray-600 w-full mx-auto border-t-1" />
-                <li className="px-4 py-2 hover:bg-gray-600">
+                <li className="px-4 py-2 rounded-b-md hover:bg-gray-600">
                   <button onClick={handleSignOut}>Cerrar Sesión</button>
                 </li>
               </ul>

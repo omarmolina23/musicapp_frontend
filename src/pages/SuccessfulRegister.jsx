@@ -17,7 +17,7 @@ export function SuccessfulRegister () {
           Ya puedes disfrutar de todo el catálogo de música que tenemos para ti.
         </p>
         <button
-          onClick={() => navigate("/catalogo")}
+          onClick={() => navigate("/")}
           className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold italic transition"
         >
           ¡Vamos allá!

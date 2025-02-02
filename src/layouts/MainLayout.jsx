@@ -23,7 +23,7 @@ export function MainLayout() {
         </div>
 
         {/* Contenido dinámico (Outlet) */}
-        <div style={{ flex: 1, overflowY: "auto" }}>
+        <div style={{ flex: 1 }}>
           <Outlet />
         </div>
       </div>

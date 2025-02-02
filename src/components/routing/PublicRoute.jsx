@@ -2,9 +2,9 @@ import { useAuth } from "../../context/authContext";
 import { Navigate, Outlet } from "react-router-dom";
 
 export function PublicRoute() {
-  const { user } = useAuth();
+  const { user, isNewlyRegistered } = useAuth();
 
-  if (user) return <Navigate to="/" replace />;
+  if (user && !isNewlyRegistered) return <Navigate to="/" replace />;
 
   return <Outlet />;
 }
