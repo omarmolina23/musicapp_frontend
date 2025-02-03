@@ -7,3 +7,81 @@ body {
 }
 
 /* Otros estilos globales */
+/* Estilo del scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  transition: opacity 0.6s ease-out;
+  opacity: 0;
+}
+
+/* Fondo del scrollbar */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+  transition: background 0.6s ease-out, opacity 0.6s ease-out;
+  opacity: 0;
+}
+
+/* Mostrar scrollbar cuando el cursor esté sobre el contenedor */
+.scroll-container:hover ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  opacity: 1;
+}
+
+/* Hacer la barra menos visible cuando se deja de interactuar */
+.scroll-container:not(:hover) ::-webkit-scrollbar-thumb {
+  background: transparent;
+  opacity: 0;
+}
+
+/* Ocultar el thumb por defecto */
+input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  opacity: 0; /* Ocultar el thumb */
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Mostrar el thumb al pasar el cursor sobre la barra */
+input[type="range"]:hover::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  -moz-appearance: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+  opacity: 1;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  -ms-appearance: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+input[type="range"]:hover::-ms-thumb {
+  opacity: 1;
+}

@@ -1,11 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
+import { Music } from "./pages/Music";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { SuccessfulRegister } from "./pages/SuccessfulRegister";
 import { AuthProvider } from "./context/authContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ProtectedRoute } from "./components/routing/ProtectedRoute";
+import { PublicRoute } from "./components/routing/PublicRoute";
+import { RegisterRoute } from "./components/routing/RegisterRoute";
 import { MainLayout } from "./layouts/MainLayout";
 
 import "./styles.css";
@@ -18,12 +21,23 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/music" element={<Music />} />
+              </Route>
+
+              <Route element={<RegisterRoute />}>
+                <Route
+                  path="/register/success"
+                  element={<SuccessfulRegister />}
+                />
               </Route>
             </Route>
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/register/success" element={<SuccessfulRegister />} />
+            <Route element={<RegisterRoute />}></Route>
+
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
           </Routes>
         </AuthProvider>
       </GoogleOAuthProvider>
