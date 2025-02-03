@@ -15,7 +15,6 @@ export function Home() {
         const response = await axios.get("/songs");
         setSongs(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.error(error);
         setLoading(false);

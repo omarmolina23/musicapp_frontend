@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useRef } from "react";
+import { createContext, useState, useContext, useRef, useEffect } from "react";
 
 export const musicContext = createContext();
 
@@ -20,30 +20,35 @@ export function MusicProvider({ children }) {
   const songArtist = currentSong ? currentSong.artist : "";
   const songCover = currentSong ? currentSong.cover_url : "";
 
-  const togglePlay = (song) => {
-    try {
-      if (song && song !== currentSong) {
-        audioRef.current.pause();
+  useEffect(() => {
+    if (currentSong) {
+      audioRef.current.src = currentSong.file_url;
 
-        setCurrentSong(song);
-
-        audioRef.current.src = song.file_url;
-
-        audioRef.current.load();
-        audioRef.current.play();
-
-        setIsPlaying(true);
-      } else {
-        if (isPlaying) {
-          audioRef.current.pause();
-        } else {
-          audioRef.current.play();
-        }
-        setIsPlaying(!isPlaying);
-      }
-    } catch (error) {
-      console.error(error);
+      audioRef.current.load();
+      audioRef.current.play();
+      setIsPlaying(true);
     }
+  }, [currentSong]);
+
+  const togglePlay = (song) => {
+    if (song && song !== currentSong) {
+      // Cambiar la canción solo si es diferente
+      setCurrentSong(song);
+    } else if (currentSong) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const formatDuration = (durationInSeconds) => {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = Math.floor(durationInSeconds % 60);
+
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   };
 
   return (
@@ -62,6 +67,7 @@ export function MusicProvider({ children }) {
         songTitle,
         songArtist,
         songCover,
+        formatDuration,
       }}
     >
       {children}

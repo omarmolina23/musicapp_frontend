@@ -39,30 +39,49 @@ body {
   opacity: 0;
 }
 
-/* Estilo del thumb personalizado */
+/* Ocultar el thumb por defecto */
 input[type="range"]::-webkit-slider-thumb {
-  width: 12px;  /* Tamaño más pequeño */
-  height: 12px; /* Tamaño más pequeño */
-  border-radius: 50%; /* Para hacerlo redondo */
-  background: #1956ff; /* Azul oscuro */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
   cursor: pointer;
-  -webkit-appearance: none; /* Evita que el estilo predeterminado se aplique en Chrome */
+  -webkit-appearance: none;
+  opacity: 0; /* Ocultar el thumb */
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Mostrar el thumb al pasar el cursor sobre la barra */
+input[type="range"]:hover::-webkit-slider-thumb {
+  opacity: 1;
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 12px;  /* Tamaño más pequeño */
-  height: 12px; /* Tamaño más pequeño */
-  border-radius: 50%; /* Para hacerlo redondo */
-  background: #1956ff; /* Azul oscuro */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
   cursor: pointer;
-  -moz-appearance: none; /* Evita que el estilo predeterminado se aplique en Firefox */
+  -moz-appearance: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+  opacity: 1;
 }
 
 input[type="range"]::-ms-thumb {
-  width: 12px;  /* Tamaño más pequeño */
-  height: 12px; /* Tamaño más pequeño */
-  border-radius: 50%; /* Para hacerlo redondo */
-  background: #1956ff; /* Azul oscuro */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
   cursor: pointer;
-  -ms-appearance: none; /* Evita que el estilo predeterminado se aplique en IE/Edge */
+  -ms-appearance: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+input[type="range"]:hover::-ms-thumb {
+  opacity: 1;
 }

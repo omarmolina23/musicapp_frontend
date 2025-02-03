@@ -6,6 +6,7 @@ import {
   MagnifyingGlassIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import { House, Search, PersonFill } from "react-bootstrap-icons";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false); // Estado para manejar el menú desplegable
@@ -27,16 +28,19 @@ export function Navbar() {
     <nav className=" text-white w-screen h-16 flex">
       <div className="flex justify-between items-center w-full px-4">
         {/* Logo */}
+        <div className="flex items-center w-[300px]">
         <Link to="/" className="text-2xl font-bold absolute left-6">
           Musicapp
         </Link>
+        </div>
+        
 
         {/* Barra de búsqueda con los íconos */}
-        <div className="flex justify-center items-center w-[450px] mx-auto relative">
+        <div className="flex justify-center items-center w-[460px]  mx-auto relative">
           {/* Ícono de la casa dentro de un círculo */}
           <Link to="/" className="mr-2">
-            <div className="flex justify-center items-center bg-gray-700 w-11 h-11 rounded-full">
-              <HomeIcon className="w-6 h-6 text-white" />
+            <div className="flex justify-center items-center bg-gray-700 w-11 h-11 rounded-full hover:scale-105 transition">
+              <House className="w-6 h-6 text-white" />
             </div>
           </Link>
 
@@ -44,30 +48,30 @@ export function Navbar() {
           <div className="relative w-full">
             {/* Ícono de lupa dentro de la barra */}
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-              <MagnifyingGlassIcon className="w-6 h-6 text-white" />
+              <Search className="w-5 h-5 text-white" />
             </div>
 
             {/* Barra de búsqueda */}
             <input
               type="text"
               placeholder="¿Qué quieres reproducir?"
-              className="w-full pl-12 py-2.5 px-4 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-12 py-2.5 px-4 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 truncate"
             />
           </div>
         </div>
 
         {/* Ícono de usuario a la derecha */}
-        <div className="relative">
+        <div className="relative flex justify-end w-[300px]">
           <button
             onClick={toggleMenu}
-            className="flex justify-center items-center bg-gray-700 w-11 h-11 rounded-full"
+            className="flex justify-center items-center bg-gray-700 w-11 h-11 rounded-full hover:scale-105 transition"
           >
-            <UserIcon className="w-6 h-6 text-white" />
+            <PersonFill className="w-6 h-6 text-white" />
           </button>
 
           {/* Menú desplegable */}
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-gray-700 text-white text-sm rounded-md shadow-lg">
+            <div className="absolute right-[-11px] top-[54px] w-48 bg-gray-700 text-white text-sm rounded-md shadow-lg z-30">
               <ul>
                 <li className="px-4 py-2 rounded-t-md hover:bg-gray-600">
                   <Link to="/profile">Perfil</Link>
