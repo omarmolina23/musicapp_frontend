@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Alert } from "../components/alerts/Alert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { SignButton } from "../components/registration/SignButton";
 import { GoogleButton } from "../components/google/GoogleButton";
 import { AlertDown } from "../components/alerts/AlertDown";
@@ -81,7 +81,6 @@ export function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gray-900 text-white p-6">
-
       <div className="bg-white rounded w-full max-w-sm m-auto">
         {error && <Alert message={error} />}
 
@@ -116,7 +115,7 @@ export function Login() {
             />
           </div>
 
-          <div className="mb-8 relative">
+          <div className="mb-6 relative">
             <label
               htmlFor="password"
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -152,12 +151,13 @@ export function Login() {
               message={"La contraseña no puede estar vacía."}
             />
           </div>
-          
+          <Link to="/register" className="text-blue-950 text-sm italic">
+            {" "}
+            ¿No te has registrado?. Regístrate
+          </Link>
           <SignButton
-            classNameProps={"flex items-center justify-center mb-3"}
-            classNameButtonProps={
-              user.email.trim() && user.password.trim()
-            }
+            classNameProps={"flex items-center justify-center mt-2 mb-3"}
+            classNameButtonProps={user.email.trim() && user.password.trim()}
             disableButtonProps={!user.email.trim() || !user.password.trim()}
             loading={loading}
             message={"Iniciar sesión"}

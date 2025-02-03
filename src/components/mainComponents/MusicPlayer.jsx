@@ -14,12 +14,15 @@ export function MusicPlayer() {
     songCover,
     audioRef,
     togglePlay,
+    toggleVolume,
     currentSong,
     setCurrentSong,
     isPlaying,
     setIsPlaying,
     volume,
     setVolume,
+    prevVolume,
+    setPrevVolume,
     progress,
     setProgress,
   } = useMusic();
@@ -29,7 +32,12 @@ export function MusicPlayer() {
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
+    setPrevVolume(newVolume);
     audioRef.current.volume = newVolume;
+  };
+
+  const handleVolumeButton = () => {
+    toggleVolume();
   };
 
   const handleTimeUpdate = () => {
@@ -132,13 +140,16 @@ export function MusicPlayer() {
         </div>
 
         <div className="flex justify-end items-center w-[400px] space-x-2">
-          {volume >= 0.5 ? (
-            <VolumeUp size={20} />
-          ) : volume === 0 ? (
-            <VolumeMute size={20} />
-          ) : (
-            <VolumeDown size={20} />
-          )}
+          <button className="hover:scale-105" onClick={handleVolumeButton}>
+            {volume >= 0.5 ? (
+              <VolumeUp size={20} />
+            ) : volume === 0 ? (
+              <VolumeMute size={20} />
+            ) : (
+              <VolumeDown size={20} />
+            )}
+          </button>
+
           <input
             type="range"
             min="0"

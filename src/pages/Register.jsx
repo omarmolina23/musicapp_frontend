@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { Alert } from "../components/alerts/Alert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { SignButton } from "../components/registration/SignButton";
 import { GoogleButton } from "../components/google/GoogleButton";
 import { AlertDown } from "../components/alerts/AlertDown";
@@ -92,7 +92,7 @@ export function Register() {
     setLoading(true);
     try {
       await signUp(user.name, user.email, user.password);
-      navigate('/register/success');
+      navigate("/register/success");
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -183,7 +183,7 @@ export function Register() {
             />
           </div>
 
-          <div className="mb-8 relative">
+          <div className="mb-6 relative">
             <label
               htmlFor="password"
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -226,8 +226,12 @@ export function Register() {
             />
           </div>
 
+          <Link to="/login" className="text-blue-950 text-sm italic">
+            {" "}
+            ¿Ya te registraste?. Inicia sesión.
+          </Link>
           <SignButton
-            classNameProps="flex items-center justify-center mb-3"
+            classNameProps="flex items-center justify-center mt-2 mb-3"
             classNameButtonProps={
               validUser.name && validUser.email && validUser.password
             }

@@ -12,6 +12,7 @@ export function MusicProvider({ children }) {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
+  const [prevVolume, setPrevVolume] = useState(1);
   const [progress, setProgress] = useState(0);
 
   const audioRef = useRef(new Audio());
@@ -44,6 +45,17 @@ export function MusicProvider({ children }) {
     }
   };
 
+  const toggleVolume = () => {
+    if (volume === 0) {
+      setVolume(prevVolume);
+    } else {
+      setPrevVolume(volume);
+      setVolume(0);
+    }
+
+    audioRef.current.volume = volume;
+  };
+
   const formatDuration = (durationInSeconds) => {
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = Math.floor(durationInSeconds % 60);
@@ -60,8 +72,11 @@ export function MusicProvider({ children }) {
         setIsPlaying,
         volume,
         setVolume,
+        prevVolume,
+        setPrevVolume,
         audioRef,
         togglePlay,
+        toggleVolume,
         progress,
         setProgress,
         songTitle,
